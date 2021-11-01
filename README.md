@@ -25,3 +25,20 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+udeta.methods.generateTokens=async function()
+{
+  const token=jwt.sign({_id:this._id.toString()},"mynameisabcworkingatabcworkingonat");
+  this.tokens=this.tokens.concat({token:token});
+  await this.save();
+  console.log(token);
+  return token;
+}
+app.post("/addata",async(req,res)=>{
+  console.log(req.body);
+  const user=new Userdata(req.body);
+  const token=await user.generateTokens();
+  res.send("this is post");
+  console.log(token);
+  user.save();
+})
+
